@@ -3,33 +3,31 @@ const cors = require('cors')
 const morgan = require('morgan')
 const dotenv = require('dotenv')
 const mysql = require('mysql2/promise')
+const waitForDB = require('./utils/db')
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
+const userRoutes = require('./routes/userRoutes')
+
 // Middleware
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
+app.use('/uploads', express.static('src/uploads')) // serve 圖片
+app.use('/api/users', userRoutes)
 
 // Test route
-app.get('/api/health', (req, res) => {
-  res.json({ message: 'health is good' })
-})
+// app.get('/api/health', (req, res) => {
+//   res.json({ message: 'health is good' })
+// })
 
 // Connect to MySQL
 async function startServer() {
   try {
-    const connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-    })
-
-    console.log('✅ MySQL')
+    await waitForDB()
 
     app.listen(PORT, () => {
       console.log(`✅ Server port:${PORT}`)
