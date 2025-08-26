@@ -10,6 +10,7 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
 
+const cpuRoutes = require('./routes/cpuRoutes')
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
 const gameRoutes = require('./routes/gameRoutes')
@@ -19,6 +20,7 @@ const adminRoutes = require('./routes/adminRoutes')
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
+app.use('/api', cpuRoutes)
 app.use('/uploads', express.static('src/uploads')) // serve 圖片
 app.use('/api/admin', adminRoutes)
 app.use('/api/auth', authRoutes)
