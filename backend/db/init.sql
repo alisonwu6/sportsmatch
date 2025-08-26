@@ -33,5 +33,5 @@ CREATE TABLE
     display_name VARCHAR(100) NOT NULL,
     role ENUM ('host', 'player') DEFAULT 'player',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_gp_game FOREIGN KEY (game_id) REFERENCES games (id)
+    CONSTRAINT fk_gp_game FOREIGN KEY (game_id) REFERENCES games (id) ON DELETE CASCADE
   );
