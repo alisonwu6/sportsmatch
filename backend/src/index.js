@@ -20,7 +20,7 @@ const adminRoutes = require('./routes/adminRoutes')
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
-app.use('/api', cpuRoutes)
+
 app.use('/uploads', express.static('src/uploads')) // serve 圖片
 app.use('/api/admin', adminRoutes)
 app.use('/api/auth', authRoutes)
@@ -37,7 +37,7 @@ async function startServer() {
   try {
     await waitForDB()
 
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`✅ Server port:${PORT}`)
     })
   } catch (err) {
