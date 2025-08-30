@@ -32,10 +32,18 @@ const handleGetGameById = async (req, res) => {
 
 const handleUpdateGame = async (req, res) => {
   try {
-    const { title, description } = req.body
-    await gameModel.updateGame(req.params.id, title, description)
+    const updatedFields = { ...req.body }
+
+    // host_name is not allowed to modify for later use. 
+    delete updatedFields.host_name
+
+    const success = await gameModel.updateGame(req.params.id, updatedFields)
+    if (!success) {
+      return res.status(404).send('Game not found or update failed')
+    }
     res.sendStatus(204)
   } catch (error) {
+    console.error('Failed to update game:', error)
     res.status(500).send('Update failed')
   }
 }

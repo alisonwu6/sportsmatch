@@ -45,13 +45,27 @@ const getGameById = async (id) => {
   return rows[0]
 }
 
-const updateGame = async (id, title, description) => {
+const updateGame = async (id, updatedFields) => {
   const db = await waitForDB()
-  await db.execute('UPDATE games SET title = ?, description = ? WHERE id = ?', [
-    title,
-    description,
-    id,
-  ])
+
+  // do nothing if no fields provided
+  if (!updatedFields || Object.keys(updatedFields).length === 0) {
+    return false
+  }
+
+  // build dynamic sql
+  const setClause = Object.keys(updatedFields)
+    .map((field) => `${field} = ?`)
+    .join(', ')
+
+  // build SQL values array
+  const values = Object.values(updatedFields)
+  values.push(id)
+
+  const sql = `UPDATE games SET ${setClause} WHERE id = ?`
+
+  const [result] = await db.execute(sql, values)
+  return result.affectedRows > 0
 }
 
 const deleteGame = async (id) => {
