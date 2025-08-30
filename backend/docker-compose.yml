@@ -30,5 +30,12 @@ services:
       - .env
     command: npm run dev
 
+  adminer:
+    image: adminer
+    container_name: sportsmatch-adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
 volumes:
   mysql-data:
