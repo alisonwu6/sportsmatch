@@ -35,7 +35,7 @@ const createGame = async (gameData) => {
 
 const getAllGames = async () => {
   const db = await waitForDB()
-  const [rows] = await db.execute('SELECT * FROM games')
+  const [rows] = await db.execute('SELECT * FROM games ORDER BY starts_at ASC')
   return rows
 }
 
@@ -73,10 +73,35 @@ const deleteGame = async (id) => {
   await db.execute('DELETE FROM games WHERE id = ?', [id])
 }
 
+const bulkInsertGames = async (games) => {
+  const db = await waitForDB()
+
+  const sql = `
+    INSERT INTO games (
+      title, sport, venue, host_name, starts_at, ends_at, max_players, tags_json, status
+    ) VALUES ?
+  `
+
+  const values = games.map((game) => [
+    game.title,
+    game.sport,
+    game.venue,
+    game.host_name,
+    game.starts_at,
+    game.ends_at,
+    game.max_players,
+    game.tags_json ? JSON.stringify(game.tags_json) : null,
+    game.status || 'open',
+  ])
+
+  await db.query(sql, [values])
+}
+
 module.exports = {
   createGame,
   getAllGames,
   getGameById,
   updateGame,
   deleteGame,
+  bulkInsertGames,
 }

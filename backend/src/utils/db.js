@@ -21,6 +21,7 @@ const waitForDB = async () => {
       connected = true
     } catch (err) {
       console.log('⏳ Waiting for DB to be ready...')
+      // console.error('Database error:', err.message)
       await new Promise(res => setTimeout(res, 2000))
     }
   }

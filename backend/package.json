@@ -7,7 +7,8 @@
     "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "docker image prune -f",
-    "build-image": "docker build -t sportsmatch-api:latest ."
+    "build-image": "docker build -t sportsmatch-api:latest .",
+    "d-backend-sh": "docker exec -it sportsmatch-backend sh"
   },
   "keywords": [],
   "author": "",
