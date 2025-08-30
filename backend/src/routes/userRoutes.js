@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { handleCreateUser } = require('../controllers/userController')
-const upload = require('../middleware/upload')
+const uploadImage = require('../middleware/uploadImage')
 
-router.post('/', upload.single('avatar'), handleCreateUser)
+router.post('/', uploadImage.single('avatar'), handleCreateUser)
 
 module.exports = router

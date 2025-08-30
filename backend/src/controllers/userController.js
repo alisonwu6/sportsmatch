@@ -3,7 +3,6 @@ const { createUser } = require('../models/userModel')
 const handleCreateUser = async (req, res) => {
   try {
     const { username, firstname, lastname, email, role, password } = req.body
-    const avatarPath = req.file ? `/uploads/${req.file.filename}` : null
 
     if (!username) {
       return res.status(400).json({ error: 'Username is required' })
@@ -25,6 +24,7 @@ const handleCreateUser = async (req, res) => {
       return res.status(400).json({ error: 'Password is required' })
     }
 
+    const avatarPath = req.file ? `/uploads/${req.file.filename}` : null
     const userId = await createUser(
       username,
       firstname,
