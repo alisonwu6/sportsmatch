@@ -23,6 +23,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 app.use('/api/video', videoRoutes)
+app.use('/api', cpuRoutes)
 app.use('/uploads', express.static('src/uploads')) // serve 圖片
 app.use('/api/admin', adminRoutes)
 app.use('/api/auth', authRoutes)
